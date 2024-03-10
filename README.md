@@ -8,4 +8,6 @@ npm i
 ## 必要安裝
 ```
 npm install --save @nestjs/axios cheerio iconv-lite
+
+npm install -g ts-node
 ```
