@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Builder, Capabilities } from 'selenium-webdriver';
+import { By } from 'selenium-webdriver';
 
 @Injectable()
 export class WebPageCompareService {
@@ -8,16 +9,18 @@ export class WebPageCompareService {
   /**
    * 為了測試執行結果，可加入 `onApplicationBootstrap()` 方法來執行程式。
    */
-  async readWebPage(options?: { gameType: 'slot' | 'fish' }) {
+  async readWebPage(options?: { gameType: 'slot' }) {
     // 創建一個 WebDriver 實例，這裡使用 Chrome 瀏覽器
     const driver = await new Builder()
       .withCapabilities(Capabilities.chrome())
       .build();
 
+    // 設定視窗解析度為 1920x1080
+    await driver.manage().window().setRect({ width: 1920, height: 1080 });
+
     const selectType = options?.gameType ?? 'slot';
     const url = {
-      slot: 'https://ts.bacctest.com/slotView?club=8',
-      fish: 'https://ts.bacctest.com/fishView?club=8',
+      slot: 'https://ts.bacctest.com/',
     };
     try {
       // 前往指定的網頁
@@ -25,15 +28,49 @@ export class WebPageCompareService {
       await driver.get(selectUrl);
 
       // 等待一段時間，確保所有動態生成內容載入完成
-      await driver.sleep(5000); // 5000 毫秒為延遲時間（5秒）
+      await driver.sleep(2000); // 2000 毫秒為延遲時間（2秒）
+
+      const are_lang = await driver.findElement(By.className('are_lang'));
+      are_lang.click();
+
+      // 等待一段時間，確保所有動態生成內容載入完成
+      await driver.sleep(2000); // 2000 毫秒為延遲時間（2秒）
+
+      // 點選【繁體中文】選項切換為繁體中文
+      const lnk_child = await are_lang.findElement(
+        By.xpath("//*[contains(text(), '繁體中文')]"),
+      );
+      lnk_child.click();
+
+      // 等待一段時間，確保所有動態生成內容載入完成
+      await driver.sleep(2000); // 2000 毫秒為延遲時間（2秒）
+
+      // 點選【電子】
+      const li_nav = await driver.findElement(
+        By.xpath("//*[contains(text(), '電子')]"),
+      );
+      li_nav.click();
+
+      // 等待一段時間，確保所有動態生成內容載入完成
+      await driver.sleep(2000); // 2000 毫秒為延遲時間（2秒）
+
+      const panel_wrap = await driver.findElement(By.className('panel_wrap'));
+      const panel_name = await panel_wrap.findElements(
+        By.className('panel_name'),
+      );
+
+      panel_name.forEach(async (element) => {
+        const text = await element.getText();
+        console.log('text: ' + text);
+      });
 
       // 取得網頁標題並輸出
       const title = await driver.getTitle();
       console.log('網頁標題:', title);
 
       // 取得網頁內容並輸出
-      const pageSource = await driver.getPageSource();
-      console.log('網頁內容:', pageSource);
+      //const pageSource = await driver.getPageSource();
+      //console.log('網頁內容:', pageSource);
     } finally {
       // 等待一段時間，讓人預覽後再關閉瀏覽器
       await driver.sleep(10000); // 10000 毫秒為延遲時間（10秒）
