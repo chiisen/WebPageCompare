@@ -59,9 +59,11 @@ export class WebPageCompareService {
         By.className('panel_name'),
       );
 
+      let count = 1;
       panel_name.forEach(async (element) => {
         const text = await element.getText();
-        console.log('text: ' + text);
+        console.log(count + ' text: ' + text);
+        count += 1;
       });
 
       // 取得網頁標題並輸出
