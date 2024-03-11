@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Builder, Capabilities } from 'selenium-webdriver';
 import { By } from 'selenium-webdriver';
+import { Utils } from "./util";
 
 @Injectable()
 export class WebPageCompareService {
-  constructor() {}
+  constructor() { }
 
   /**
    * 為了測試執行結果，可加入 `onApplicationBootstrap()` 方法來執行程式。
@@ -30,20 +31,14 @@ export class WebPageCompareService {
       // 等待一段時間，確保所有動態生成內容載入完成
       await driver.sleep(2000); // 2000 毫秒為延遲時間（2秒）
 
-      const are_lang = await driver.findElement(By.className('are_lang'));
-      are_lang.click();
-
-      // 等待一段時間，確保所有動態生成內容載入完成
-      await driver.sleep(2000); // 2000 毫秒為延遲時間（2秒）
+      const are_lang = await Utils.findElementClassName(
+        driver, 'are_lang', 200, 'click'
+      );
 
       // 點選【繁體中文】選項切換為繁體中文
-      const lnk_child = await are_lang.findElement(
-        By.xpath("//*[contains(text(), '繁體中文')]"),
+      const lnk_child = await Utils.findElementText(
+        driver, are_lang, '繁體中文', 200, 'click'
       );
-      lnk_child.click();
-
-      // 等待一段時間，確保所有動態生成內容載入完成
-      await driver.sleep(2000); // 2000 毫秒為延遲時間（2秒）
 
       // 點選【電子】
       const li_nav = await driver.findElement(
