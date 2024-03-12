@@ -3,6 +3,7 @@ import { Builder, Capabilities } from 'selenium-webdriver';
 import { By } from 'selenium-webdriver';
 import { Utils } from './util';
 import * as XLSX from 'xlsx';
+import * as dotenv from 'dotenv';
 
 @Injectable()
 export class WebPageCompareService {
@@ -12,6 +13,12 @@ export class WebPageCompareService {
    * 為了測試執行結果，可加入 `onApplicationBootstrap()` 方法來執行程式。
    */
   async readWebPage(options?: { gameType: 'slot' }) {
+    // 讀取 .env 檔案
+    dotenv.config();
+
+    const gameType = process.env.GAME_TYPE;
+    console.log(`GAME_TYPE=${gameType}`);
+
     // 讀取 Excel 檔案
     const workbook = XLSX.readFile('GameList.xlsx');
 
@@ -63,7 +70,7 @@ export class WebPageCompareService {
       await Utils.findElementText(driver, are_lang, '繁體中文', 200, 'click');
 
       // 點選【電子】
-      await Utils.findAllText(driver, '電子', 200, 'click');
+      await Utils.findAllText(driver, gameType, 200, 'click');
 
       const panel_wrap = await Utils.findAllClassName(
         driver,
