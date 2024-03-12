@@ -19,6 +19,9 @@ export class WebPageCompareService {
     const gameType = process.env.GAME_TYPE;
     console.log(`GAME_TYPE=${gameType}`);
 
+    const clubType = process.env.CLUB_TYPE;
+    console.log(`CLUB_TYPE=${clubType}`);
+
     // 讀取 Excel 檔案
     const workbook = XLSX.readFile('GameList.xlsx');
 
@@ -79,6 +82,17 @@ export class WebPageCompareService {
         '',
       );
 
+      // 點選【廠商】
+      const aside_list = await Utils.findAllClassName(
+        driver,
+        'aside_list',
+        1,
+        '',
+      );
+
+      await Utils.findElementText(driver, aside_list, clubType, 200, 'click');
+
+      // 取的遊戲列表
       const panel_name = await panel_wrap.findElements(
         By.className('panel_name'),
       );
