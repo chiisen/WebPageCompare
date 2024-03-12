@@ -106,13 +106,13 @@ export class WebPageCompareService {
           const nowIndex = index + 1;
           if (nowIndex != count) {
             console.log(
-              `text: ${text} 排序錯誤 Excel=${nowIndex}, 遊戲畫面=${count}`,
+              `❌ text: ${text} 排序錯誤 Excel=${nowIndex}, 遊戲畫面=${count}`,
             );
           } else {
             console.log(`${count} text: ${text} 正確✅`);
           }
         } else {
-          console.log(`text: ${text} 不存在`);
+          console.log(`❌ text: ${text} Excel中不存在`);
         }
 
         count += 1;
