@@ -74,12 +74,11 @@ export class WebPageCompareService {
 
       await Utils.findElementText(driver, aside_list, clubType, 200, 'click');
 
+      const workbook = XLSX.readFile('GameList.xlsx');
+      // 獲取第一個工作表
+      const sheet_name_list = workbook.SheetNames;
+
       const cycleCheck = async (sheetIndex: number) => {
-        const workbook = XLSX.readFile('GameList.xlsx');
-
-        // 獲取第一個工作表
-        const sheet_name_list = workbook.SheetNames;
-
         const worksheet = workbook.Sheets[sheet_name_list[sheetIndex]];
         // 將工作表轉換為 JSON 對象
         const data = XLSX.utils.sheet_to_json(worksheet);
@@ -135,14 +134,11 @@ export class WebPageCompareService {
           count += 1;
         }
       };
-      await cycleCheck(0);
-      await driver.sleep(500);
-      await cycleCheck(1);
-      await driver.sleep(500);
-      await cycleCheck(2);
-      await driver.sleep(500);
-      await cycleCheck(3);
-      await driver.sleep(500);
+
+      for (const sheet in sheet_name_list) {
+        await cycleCheck(Number(sheet));
+        await driver.sleep(500);
+      }
       // 取得網頁標題並輸出
       const title = await driver.getTitle();
       console.log('網頁標題:', title);
