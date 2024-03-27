@@ -103,7 +103,6 @@ export class WebPageCompareService {
         const panel_name = await panel_wrap.findElements(
           By.className('panel_name'),
         );
-
         const map = new Map();
 
         data.forEach((element, index) => {
@@ -117,6 +116,7 @@ export class WebPageCompareService {
         let count = 1;
         for (const element of panel_name) {
           const text = await element.getText();
+          const textTrim = await text.replaceAll(/\s/g, '');
           if (map.has(text)) {
             const index = map.get(text);
             const nowIndex = index + 1;
@@ -127,8 +127,10 @@ export class WebPageCompareService {
             } else {
               console.log(`${count} text: ${text} 正確✅`);
             }
+          } else if (map.has(textTrim)) {
+            console.log(`🤢 text: ${textTrim} 可能有空白不完全匹配`);
           } else {
-            console.log(`❌ text: ${text} Excel中不存在`);
+            console.log(`🤨 text: ${text} 不存在在遊戲列表中`);
           }
 
           count += 1;
