@@ -73,7 +73,7 @@ export class WebPageCompareService {
       );
 
       await Utils.findElementText(driver, aside_list, clubType, 200, 'click');
-
+      await Utils.scrollPage(driver, 700);
       const workbook = XLSX.readFile('GameList.xlsx');
       // 獲取第一個工作表
       const sheet_name_list = workbook.SheetNames;

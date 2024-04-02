@@ -99,4 +99,17 @@ export class Utils {
       console.log(error);
     }
   }
+  /**
+   * 將頁面滾動到指定位置
+   * @param driver - WebDriver 的實例。
+   * @param ms - 要滾動到的垂直位置。
+   */
+  static async scrollPage(driver: WebDriver, ms: number) {
+    try {
+      // 等待一段時間，確保所有動態生成內容載入完成
+      await driver.executeScript(`window.scrollTo(0, ${ms})`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
