@@ -48,3 +48,13 @@ CLUB_TYPE='RSG'
 1. 全部✅為執行正確
 2. 一執行就 throw 例外，表示原始的 'GameList.xlsx' 有重複資料
 3. 順序錯誤也會標示 Excel 的順序與遊戲畫面上的順序
+
+# git commit message
+- 常用描述
+```
+✨ feat: 需求功能描述
+🐛 fix: 修正 bug 的問題描述
+💄 optimize: 最佳化程式碼或功能流程
+🔧 chore: 雜事，例如: 調整設定檔案等等 
+```
+
