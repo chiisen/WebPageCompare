@@ -103,10 +103,12 @@ export class WebPageCompareService {
         const panel_name = await panel_wrap.findElements(
           By.className('panel_name'),
         );
-        const map = new Map();
+        const map = new Map<string, number>();
 
         data.forEach((element, index) => {
-          const gameName = (element as { gameName: string }).gameName;
+          const gameName = (element as { gameName: string }).gameName
+            .toString()
+            .trim();
           if (map.has(gameName)) {
             throw new Error(`Map already contain the key(${gameName}).`);
           } else {
