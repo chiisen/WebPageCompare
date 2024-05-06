@@ -10,6 +10,15 @@ export class WebPageCompareService {
   constructor() {}
 
   /**
+   * 判斷是否為中文
+   * @param text
+   * @returns
+   */
+  isChinese(text: string): boolean {
+    return /[\u4e00-\u9fa5]/.test(text);
+  }
+
+  /**
    * 為了測試執行結果，可加入 `onApplicationBootstrap()` 方法來執行程式。
    */
   async readWebPage(options?: { gameType: 'slot' }) {
@@ -109,6 +118,9 @@ export class WebPageCompareService {
           const gameName = (element as { gameName: string }).gameName
             .toString()
             .trim();
+          if (!this.isChinese(gameName)) {
+            throw new Error(`遊戲名稱(${gameName})必須是中文`);
+          }
           if (map.has(gameName)) {
             throw new Error(`Map already contain the key(${gameName}).`);
           } else {
