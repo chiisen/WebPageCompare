@@ -50,7 +50,10 @@ export class WebComparePromotionService {
       const fcRepeatCheck = async () => {
         const map = new Map<any, any>();
         data.slice(1).forEach((element) => {
-          const promotionData = (element as { ['zh-Hant'] })['zh-Hant'];
+          const promotionData = (element as { ['zh-Hant'] })['zh-Hant'].replace(
+            /\n/g,
+            '',
+          );
           if (map.has(promotionData)) {
             throw new Error(`重複標題: ${promotionData}`);
           } else {
@@ -76,13 +79,12 @@ export class WebComparePromotionService {
           const content =
             (await promotionTitle[0].getText()) +
             (await promotionContent[0].getText());
-          console.log(content, map);
-          // if (map.get([content]) === content) {
-          //   console.log(`text: ${content} 正確✅`);
-          // } else {
-          //   console.log(`🤨 content: ${content} 錯誤❌`);
-          // }
-
+          const cleanedContent = content.replace(/(\r\n|\n|\r)/gm, '');
+          if (map.get(cleanedContent) == cleanedContent) {
+            console.log(`content: ${cleanedContent} 正確✅`);
+          } else {
+            console.log(`content: ${cleanedContent} 錯誤❌`);
+          }
           const box = await box_wrapper.findElement(By.className('box_close'));
           await box.click();
           await driver.sleep(1000);
