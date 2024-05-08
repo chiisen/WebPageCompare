@@ -160,9 +160,9 @@ export class WebPageCompareService {
     }
   }
 
-  async onApplicationBootstrap() {
-    // 呼叫函數來執行讀取網頁的操作
-    const slotGameList = await this.readWebPage({ gameType: 'slot' });
-    console.log(slotGameList); // slot
-  }
+  // async onApplicationBootstrap() {
+  //   // 呼叫函數來執行讀取網頁的操作
+  //   const slotGameList = await this.readWebPage({ gameType: 'slot' });
+  //   console.log(slotGameList); // slot
+  // }
 }

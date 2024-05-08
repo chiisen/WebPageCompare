@@ -35,7 +35,7 @@ export class Utils {
     }
   }
   /**
-   * 找到指定 text 內容的元素
+   * 找到指定父元素裡的 text 內容的元素
    * @param driver
    * @param webElement
    * @param text
