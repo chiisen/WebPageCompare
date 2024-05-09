@@ -17,7 +17,6 @@ export class WebComparePromotionService {
     const sheet_name_list = workbook.SheetNames;
     const worksheet = workbook.Sheets[sheet_name_list[3]];
     const data = XLSX.utils.sheet_to_json(worksheet);
-
     try {
       const are_lang = await Utils.findAllClassName(
         driver,
@@ -49,17 +48,20 @@ export class WebComparePromotionService {
 
       const fcRepeatCheck = async () => {
         const map = new Map<any, any>();
+        let cleanedPromotionData = '';
         data.slice(1).forEach((element) => {
-          const promotionData = (element as { ['zh-Hant'] })['zh-Hant'].replace(
-            /\n/g,
+          const promotionData = (element as { ['zh-Hant'] })['zh-Hant'];
+          cleanedPromotionData = promotionData.replace(
+            /(\r\n|\n|\r|\s+)/gm,
             '',
           );
-          if (map.has(promotionData)) {
+          if (map.has(cleanedPromotionData)) {
             throw new Error(`重複標題: ${promotionData}`);
           } else {
-            map.set(promotionData, promotionData);
+            map.set(cleanedPromotionData, cleanedPromotionData);
           }
         });
+
         for (const promotion of lnk_promotion) {
           await promotion.click();
           await driver.sleep(1000);
@@ -76,14 +78,17 @@ export class WebComparePromotionService {
             By.className('p_promoText'),
           );
 
-          const content =
-            (await promotionTitle[0].getText()) +
-            (await promotionContent[0].getText());
-          const cleanedContent = content.replace(/(\r\n|\n|\r)/gm, '');
-          if (map.get(cleanedContent) == cleanedContent) {
-            console.log(`content: ${cleanedContent} 正確✅`);
+          const promotionTitleText = await promotionTitle[0].getText();
+          const promotionContentText = await promotionContent[0].getText();
+
+          const content: any =
+            promotionTitleText.replace(/(\r\n|\n|\r|\s+)/gm, '') +
+            promotionContentText.replace(/(\r\n|\n|\r|\s+)/gm, '');
+
+          if (map.has(content)) {
+            console.log(`content: ${content} 正確✅`);
           } else {
-            console.log(`content: ${cleanedContent} 錯誤❌`);
+            console.log(`content: ${content} 錯誤❌`);
           }
           const box = await box_wrapper.findElement(By.className('box_close'));
           await box.click();
@@ -95,7 +100,15 @@ export class WebComparePromotionService {
     } catch (e) {
       console.error(e);
     } finally {
-      // await driver.quit();
+      await driver.quit();
+
+      // 關閉伺服器
+      console.log('關閉伺服器');
+      process.exit(0); // 關閉應用程式
     }
+  }
+  async onApplicationBootstrap() {
+    // 呼叫函數來執行讀取網頁的操作
+    await this.readWebPage();
   }
 }

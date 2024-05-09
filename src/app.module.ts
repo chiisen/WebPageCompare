@@ -14,7 +14,7 @@ export class AppModule implements OnApplicationBootstrap {
     private readonly webComparePromotionService: WebComparePromotionService,
   ) {}
   async onApplicationBootstrap() {
-    // await this.webPageCompareService.readWebPage();
+    await this.webPageCompareService.readWebPage();
     await this.webComparePromotionService.readWebPage();
   }
 }

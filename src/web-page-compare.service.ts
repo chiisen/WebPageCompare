@@ -153,16 +153,12 @@ export class WebPageCompareService {
     } finally {
       // 關閉瀏覽器
       await driver.quit();
-
-      // 關閉伺服器
-      console.log('關閉伺服器');
-      process.exit(0); // 關閉應用程式
     }
   }
 
-  // async onApplicationBootstrap() {
-  //   // 呼叫函數來執行讀取網頁的操作
-  //   const slotGameList = await this.readWebPage({ gameType: 'slot' });
-  //   console.log(slotGameList); // slot
-  // }
+  async onApplicationBootstrap() {
+    // 呼叫函數來執行讀取網頁的操作
+    const slotGameList = await this.readWebPage({ gameType: 'slot' });
+    console.log(slotGameList); // slot
+  }
 }
