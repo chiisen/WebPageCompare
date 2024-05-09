@@ -165,10 +165,6 @@ export class WebPageCompareService {
     } finally {
       // 關閉瀏覽器
       await driver.quit();
-
-      // 關閉伺服器
-      console.log('關閉伺服器');
-      process.exit(0); // 關閉應用程式
     }
   }
 
