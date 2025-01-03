@@ -47,15 +47,15 @@ export class WebPageCompareService {
       const are_lang = await Utils.findAllClassName(
         driver,
         'are_lang',
-        200,
+        500,
         'click',
       );
 
       // 點選【繁體中文】選項切換為繁體中文
-      await Utils.findElementText(driver, are_lang, '繁體中文', 200, 'click');
+      await Utils.findElementText(driver, are_lang, '繁體中文', 500, 'click');
 
       // 點選【電子】
-      await Utils.findAllText(driver, gameType, 200, 'click');
+      await Utils.findAllText(driver, gameType, 500, 'click');
 
       const panel_wrap = await Utils.findAllClassName(
         driver,
@@ -72,7 +72,7 @@ export class WebPageCompareService {
         '',
       );
 
-      await Utils.findElementText(driver, aside_list, clubType, 200, 'click');
+      await Utils.findElementText(driver, aside_list, clubType, 500, 'click');
       await Utils.scrollPage(driver, 700);
       const workbook = XLSX.readFile('GameList.xlsx');
       // 獲取第一個工作表
@@ -96,10 +96,11 @@ export class WebPageCompareService {
           driver,
           category_list,
           categoryType,
-          200,
+          500,
           'click',
         );
         // 取的遊戲列表
+
         const panel_name = await panel_wrap.findElements(
           By.className('panel_name'),
         );
@@ -156,9 +157,9 @@ export class WebPageCompareService {
     }
   }
 
-  async onApplicationBootstrap() {
-    // 呼叫函數來執行讀取網頁的操作
-    const slotGameList = await this.readWebPage({ gameType: 'slot' });
-    console.log(slotGameList); // slot
-  }
+  // async onApplicationBootstrap() {
+  //   // 呼叫函數來執行讀取網頁的操作
+  //   const slotGameList = await this.readWebPage({ gameType: 'slot' });
+  //   console.log(slotGameList); // slot
+  // }
 }

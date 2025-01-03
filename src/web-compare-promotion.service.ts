@@ -107,8 +107,8 @@ export class WebComparePromotionService {
       process.exit(0); // 關閉應用程式
     }
   }
-  async onApplicationBootstrap() {
-    // 呼叫函數來執行讀取網頁的操作
-    await this.readWebPage();
-  }
+  // async onApplicationBootstrap() {
+  //   // 呼叫函數來執行讀取網頁的操作
+  //   await this.readWebPage();
+  // }
 }

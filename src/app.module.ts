@@ -15,6 +15,6 @@ export class AppModule implements OnApplicationBootstrap {
   ) {}
   async onApplicationBootstrap() {
     await this.webPageCompareService.readWebPage();
-    await this.webComparePromotionService.readWebPage();
+    // await this.webComparePromotionService.readWebPage();
   }
 }
